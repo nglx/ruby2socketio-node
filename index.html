@@ -1,13 +1,24 @@
 <html>
 	<head>
 		<script src='/socket.io/socket.io.js'></script>
-	
-		<script type="text/javascript">
-			var socket = io.connect('/');
+		<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>	
 		
+		<script type="text/javascript">
+
+			$( document ).ready(function() {
+				$('#output').append('started!<br/>');
+			});
+			
+			var socket = io.connect('/');
+			
+			socket.on('all', function (data) {
+				$('#output').append(data);
+				$('#output').append('<br/>');
+			});
 		</script>
 	</head>
 	<body>
-		not yet implemented
+		<div id="output">
+		</div>
 	</body>
 </html>
