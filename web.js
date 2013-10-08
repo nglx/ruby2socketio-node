@@ -7,12 +7,8 @@ var app = require("http").createServer(handler), // handler defined below
 var url = require('url');
 var redisURL = url.parse(process.env.REDISCLOUD_URL);
 
-redis.createClient(redisURL.port, redisURL.hostname, {no_ready_check: true});
-client.auth(redisURL.auth.split(":")[1]);
 var redis = require("redis"),
 	subscriber = redis.createClient();
-
-
 
 function handler (req, res) {
   fs.readFile(__dirname + "/index.html",
