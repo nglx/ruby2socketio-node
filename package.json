@@ -2,7 +2,7 @@
     "name": "XtbPush",
     "description" : "A Node.js, socket.io, and Redis app",
     "dependencies": {
-	"socket.io" : "0.9.13"},
+	"socket.io" : "0.9.13", "redis" : "0.8.6"},
     "engines" : { 
 	"node" : "0.8.11"}
 }

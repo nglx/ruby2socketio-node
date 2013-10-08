@@ -2,8 +2,10 @@ var fs = require("fs"),
 	config = require("./config").config;
 
 var app = require("http").createServer(handler), // handler defined below
-io = require("socket.io").listen(app);
+	io = require("socket.io").listen(app);
 
+var redis = require("redis"),
+	subscriber = redis.createClient();
 
 function handler (req, res) {
   fs.readFile(__dirname + "/index.html",
