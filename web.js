@@ -41,3 +41,6 @@ function startIOServer () {
     });
 };
 
+function readAndSend (socket) {
+	socket.emit("all", "test");
+}
