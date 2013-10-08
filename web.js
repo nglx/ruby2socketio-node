@@ -36,13 +36,22 @@ function startIOServer () {
     io.configure(function () { 
     	io.set("transports", config[platform].transports); // Set config in ./config.js
     	io.set("polling duration", 10); 
-	io.set("log level", 2);
+		io.set("log level", 2);
     });
+    
     io.sockets.on("connection", function (socket) {
-	readAndSend(socket);
+        var subscribe = redis.createClient()
+        subscribe.subscribe('ruby');
+ 
+        subscribe.on("message", function(channel, message) {
+            socket.emit("all", message);
+        });
+ 
+        socket.on('message', function(msg) {
+        });
+ 
+        socket.on('disconnect', function() {
+            subscribe.quit();
+        });
     });
 };
-
-function readAndSend (socket) {
-	io.sockets.emit("all", "test");
-}
