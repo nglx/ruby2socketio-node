@@ -43,14 +43,14 @@ function startIOServer () {
 
 		if (process.env.REDISCLOUD_URL) {
 			var redisURL = url.parse(process.env.REDISCLOUD_URL);
-	        var subscribe = redis.createClient(redisURL.port, redisURL.hostname, {no_ready_check: true});
-			subscribe.auth(redisURL.auth.split(":")[1]);
+	        var client = redis.createClient(redisURL.port, redisURL.hostname, {no_ready_check: true});
+			client.auth(redisURL.auth.split(":")[1]);
 		} else {
-	        var subscribe = redis.createClient()
+	        var client = redis.createClient()
 		}
-        subscribe.subscribe('ruby');
+        client.subscribe('ruby');
  
-        subscribe.on("message", function(channel, message) {
+        client.on("message", function(channel, message) {
             socket.emit("all", message);
         });
  
@@ -58,7 +58,7 @@ function startIOServer () {
         });
  
         socket.on('disconnect', function() {
-            subscribe.quit();
+            client.quit();
         });
     });
 };
