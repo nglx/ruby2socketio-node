@@ -5,9 +5,7 @@ var app = require("http").createServer(handler), // handler defined below
 	io = require("socket.io").listen(app);
 
 var url = require('url');
-
-var redis = require("redis"),
-	subscriber = redis.createClient();
+var redis = require("redis");
 
 function handler (req, res) {
   fs.readFile(__dirname + "/index.html",
@@ -42,9 +40,14 @@ function startIOServer () {
     });
     
     io.sockets.on("connection", function (socket) {
-		var redisURL = url.parse(process.env.REDISCLOUD_URL);
-        var subscribe = redis.createClient(redisURL.port, redisURL.hostname, {no_ready_check: true});
-        subscribe.auth(redisURL.auth.split(":")[1]);
+
+		if (process.env.REDISCLOUD_URL) {
+			var redisURL = url.parse(process.env.REDISCLOUD_URL);
+	        var subscribe = redis.createClient(redisURL.port, redisURL.hostname, {no_ready_check: true});
+			subscribe.auth(redisURL.auth.split(":")[1]);
+		} else {
+	        var subscribe = redis.createClient()
+		}
         subscribe.subscribe('ruby');
  
         subscribe.on("message", function(channel, message) {
